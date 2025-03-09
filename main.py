@@ -1,12 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 import random
 
 app = FastAPI()
-
-# we will build two simple get endpoints
-#  side_hustles
-#  money_quotes
-
 
 side_hustles = [
     "Freelancing - Start offering your skills online!",
@@ -21,7 +16,6 @@ side_hustles = [
     "Social Media Management - Manage accounts for brands and influencers!",
     "App Development - Create mobile or web applications for businesses!",
 ]
-
 
 money_quotes = [
     "The way to get started is to quit talking and begin doing. – Walt Disney",
@@ -41,30 +35,16 @@ money_quotes = [
     "Money grows on the tree of persistence. – Japanese Proverb",
 ]
 
-
 @app.get("/side_hustles")
-def get_side_hustles(apiKey: str):
+def get_side_hustles(apiKey: str | None = Query(None)):
     """Returns a random side hustle idea"""
-    if apiKey != "1234567890":
+    if apiKey and apiKey != "1234567890":
         return {"error": "Invalid API key"}
-
     return {"side_hustle": random.choice(side_hustles)}
 
 @app.get("/money_quotes")
-def get_money_quotes(apiKey: str):
+def get_money_quotes(apiKey: str | None = Query(None)):
     """Return a random money quote"""
-    if apiKey != "1234567890":
+    if apiKey and apiKey != "1234567890":
         return {"error": "Invalid API key"}
-    
     return {"money_quote": random.choice(money_quotes)}
-
-
-
-
-# uv init simple-api
-# cd simple-api
-# 3️⃣ Install FastAPI (Dependency)
-# uv add fastapi[standard]
-# 4️⃣ Activate UV Virtual Environment (Windows)
-# .venv\Scripts\activate
-# fastapi dev main.py
